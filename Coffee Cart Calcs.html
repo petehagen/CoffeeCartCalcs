@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Cart Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Coffee Cart Calculator</h1>
+    <form id="calculator">
+        <label for="daysPerMonth">Days of Operation Per Month:</label>
+        <input type="number" id="daysPerMonth" value="29" step="1">
+
+        <label for="numEmployees">Number of Employees:</label>
+        <input type="number" id="numEmployees" value="2" step="1">
+
+        <label for="wagePerHour">Employee Wage Per Hour ($):</label>
+        <input type="number" id="wagePerHour" value="18" step="0.01">
+
+        <label for="hoursPerDay">Employee Hours Per Day:</label>
+        <input type="number" id="hoursPerDay" value="8" step="1">
+
+        <label for="cupsPerDay">Cups Sold Per Day:</label>
+        <input type="number" id="cupsPerDay" value="200" step="1">
+
+        <label for="pricePerCup">Price Per Cup ($):</label>
+        <input type="number" id="pricePerCup" value="5.00" step="0.01">
+
+        <label for="coffeeCost">Cost Per Cup of Coffee ($):</label>
+        <input type="number" id="coffeeCost" value="0.50" step="0.01">
+
+        <label for="pastriesPerDay">Pastries Sold Per Day:</label>
+        <input type="number" id="pastriesPerDay" value="50" step="1">
+
+        <label for="pricePerPastry">Price Per Pastry ($):</label>
+        <input type="number" id="pricePerPastry" value="6.00" step="0.01">
+
+        <label for="pastryCost">Cost Per Pastry ($):</label>
+        <input type="number" id="pastryCost" value="3.00" step="0.01">
+
+        <label for="overheadCosts">Overhead Costs (Rent, Licensing, Insurance, Utilities) ($):</label>
+        <input type="number" id="overheadCosts" value="1000" step="0.01">
+
+        <button type="button" onclick="calculate()">Calculate</button>
+    </form>
+
+    <h2>Results</h2>
+    <p id="revenue">Total Monthly Revenue: $0.00</p>
+    <p id="expenses">Total Monthly Expenses: $0.00</p>
+    <p id="profit">Gross Profit: $0.00</p>
+
+    <script>function calculate() {
+            // Get inputs
+            const daysPerMonth = parseInt(document.getElementById('daysPerMonth').value);
+            const numEmployees = parseInt(document.getElementById('numEmployees').value);
+            const wagePerHour = parseFloat(document.getElementById('wagePerHour').value);
+            const hoursPerDay = parseInt(document.getElementById('hoursPerDay').value);
+            const cupsPerDay = parseFloat(document.getElementById('cupsPerDay').value);
+            const pricePerCup = parseFloat(document.getElementById('pricePerCup').value);
+            const coffeeCost = parseFloat(document.getElementById('coffeeCost').value);
+            const pastriesPerDay = parseFloat(document.getElementById('pastriesPerDay').value);
+            const pricePerPastry = parseFloat(document.getElementById('pricePerPastry').value);
+            const pastryCost = parseFloat(document.getElementById('pastryCost').value);
+            const overheadCosts = parseFloat(document.getElementById('overheadCosts').value);
+
+            // Calculate revenue
+            const coffeeRevenue = cupsPerDay * pricePerCup * daysPerMonth;
+            const pastryRevenue = pastriesPerDay * pricePerPastry * daysPerMonth;
+            const totalRevenue = coffeeRevenue + pastryRevenue;
+
+            // Calculate costs
+            const coffeeCOGS = cupsPerDay * coffeeCost * daysPerMonth;
+            const pastryCOGS = pastriesPerDay * pastryCost * daysPerMonth;
+            const totalCOGS = coffeeCOGS + pastryCOGS;
+
+            // Calculate employee costs with burden (30%)
+            const baseEmployeeWages = numEmployees * wagePerHour * hoursPerDay * daysPerMonth;
+            const employeeBurden = baseEmployeeWages * 0.30;
+            const totalEmployeeCosts = baseEmployeeWages + employeeBurden;
+
+            // Calculate total operational costs including overhead
+            const marketingAndMaintenance = 450; // Fixed marketing and maintenance cost
+            const totalOperationalCosts = overheadCosts + totalEmployeeCosts + marketingAndMaintenance;
+
+            // Calculate total expenses
+            const totalExpenses = totalCOGS + totalOperationalCosts;
+
+            // Calculate profit
+            const profit = totalRevenue - totalExpenses;
+
+            // Display results
+            document.getElementById('revenue').innerText = `Total Monthly Revenue: $${totalRevenue.toFixed(2)}`;
+            document.getElementById('expenses').innerText = `Total Monthly Expenses: $${totalExpenses.toFixed(2)}`;
+            document.getElementById('profit').innerText = `Gross Profit: $${profit.toFixed(2)}`;
+        }</script>
+</body>
+</html>
